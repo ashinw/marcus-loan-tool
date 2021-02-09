@@ -1,8 +1,0 @@
-{
-  "customTransformerPythonModule": "german_bank.py",
-  "serialisedLearningModel": "german_bank.pkl",
-  "dataframe": {
-    "trainingDataSource": "german_bank_training_dataframe.csv",
-    "ignoreFeaturesList": ["fieldX", "fieldY", "fieldZ"]
-  }
-}

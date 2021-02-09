@@ -1,17 +1,22 @@
 import fs from 'fs'
 import process from 'process'
-import { DefaultCliFlags, IApplicantConfig, ICliFlags, ILenderConfig } from "./AssessmentInputs.js"
+import { IApplicantConfig } from "./ApplicantConfig.js"
+import { FsLearningModelLoader, IFsLearningModelConfig } from './FsLearningModelLoader.js'
+import { RejectedLoanApplExplainer } from './RejectedLoanApplExplainer.js'
 
-class FailedLoanAppCli {
+class RejectedLoanApplExplainerCli {
   private _applicantConfig: IApplicantConfig
-  private _lenderConfig: ILenderConfig
-  private _cliFlags: ICliFlags
+  private _learningModelConfig: IFsLearningModelConfig
 
-  public async run(): Promise<void> {
+  public async run(): Promise<string> {
     await this._parseArgs()
-    console.log(this._applicantConfig)
-    console.log(this._lenderConfig)
-    console.log(this._cliFlags)
+    let explainer = new RejectedLoanApplExplainer(this._applicantConfig, this._learningModelConfig)
+    let fsModelLoader = new FsLearningModelLoader(this._learningModelConfig)
+    explainer.prepareAssessmentData(fsModelLoader)
+    explainer.assessLowestThresholds()
+    let topRecommendations = explainer.reportTopRecommendationsToChangeOutcome()
+    let ret = JSON.stringify(topRecommendations)
+    return ret
   }
 
   private async _parseArgs(): Promise<void> {
@@ -22,19 +27,15 @@ class FailedLoanAppCli {
 			else if (process.argv[i].charAt(1) === 'a')
         this._applicantConfig = <IApplicantConfig> await this._loadConfiguration(process.argv[++i])
       else if (process.argv[i].charAt(1) === 'l')
-        this._lenderConfig = <ILenderConfig> await this._loadConfiguration(process.argv[++i])
-      else if (process.argv[i].charAt(1) === 'f')
-        this._cliFlags = <ICliFlags> await this._loadConfiguration(process.argv[++i])
+        this._learningModelConfig = <IFsLearningModelConfig> await this._loadConfiguration(process.argv[++i])
     }
     if (process.argv.length === 1 || showHelp)
       this._prepareHelpMessage()
     else {
       if (!this._applicantConfig)
         throw new Error('No applicant configuration was provided')
-      if (!this._lenderConfig)
+      if (!this._learningModelConfig)
         throw new Error('No lender configuration was provided')
-      if (!this._cliFlags)
-        this._cliFlags = new DefaultCliFlags()
     }
   }
 
@@ -51,17 +52,18 @@ class FailedLoanAppCli {
 
   private _prepareHelpMessage(): void {
     const HELP_MSG = 
-`Failed Loan App command line interface
-FailedLoadAppCli [options]
+`Rejected Loan App Explainer command line interface
+RejectedLoanApplExplainerCli [options]
 where options are:
   --help|-h|-?\t\t- prints this message
-  -a <applicant JSON> 
-  -l <lender JSON> 
+  -a <applicant JSON config> 
+  -l <learning model JSON config> 
   [-f <flags JSON>]
 ` 
     console.log(HELP_MSG)
   }
 }
 
-let app = new FailedLoanAppCli()
-app.run()
+let app = new RejectedLoanApplExplainerCli()
+let result = await app.run()
+console.log(result)

@@ -1,0 +1,45 @@
+{
+  "customTransformerPythonModulePath": "german_bank.py",
+  "serialisedPickleLearningModelPath": "german_bank.pkl",
+  "dataFrameConfig": {
+    "trainingDataSourcePath": "german_bank_training_dataframe.csv",
+    "dropFeaturesList": [
+      "CustomerID",
+      "Telephone",
+      "FirstName",
+      "LastName",
+      "Email",
+      "StreetAddress",
+      "City",
+      "State",
+      "PostalCode",
+      "Risk"
+    ]
+  },
+  "orderedDataFrameFieldList": [
+    "CheckingStatus",
+    "CreditHistory",
+    "ExistingSavings",
+    "InstallmentPlans",
+    "ExistingCreditsCount",
+    "EmploymentDuration",
+    "Sex",
+    "CurrentResidenceDuration",
+    "OwnsProperty",
+    "Age",
+    "Housing",
+    "Job",
+    "Dependents",
+    "ForeignWorker",
+    "LoanDuration",
+    "LoanPurpose",
+    "LoanAmount",
+    "InstallmentPercent",
+    "OthersOnLoan"
+  ],
+  "ignoreDataFrameFieldList": [
+    "Sex",
+    "ForeignWorker"
+  ],
+  "recommendationsCount": 12
+}

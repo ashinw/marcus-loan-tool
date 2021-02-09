@@ -1,12 +1,17 @@
 import fs from 'fs';
 import process from 'process';
-import { DefaultCliFlags } from "./AssessmentInputs.js";
-class FailedLoadAppCli {
+import { FsLearningModelLoader } from './FsLearningModelLoader.js';
+import { RejectedLoanApplExplainer } from './RejectedLoanApplExplainer.js';
+class RejectedLoanApplExplainerCli {
     async run() {
         await this._parseArgs();
-        console.log(this._applicantConfig);
-        console.log(this._lenderConfig);
-        console.log(this._cliFlags);
+        let explainer = new RejectedLoanApplExplainer(this._applicantConfig, this._learningModelConfig);
+        let fsModelLoader = new FsLearningModelLoader(this._learningModelConfig);
+        explainer.prepareAssessmentData(fsModelLoader);
+        explainer.assessLowestThresholds();
+        let topRecommendations = explainer.reportTopRecommendationsToChangeOutcome();
+        let ret = JSON.stringify(topRecommendations);
+        return ret;
     }
     async _parseArgs() {
         let showHelp = false;
@@ -16,19 +21,15 @@ class FailedLoadAppCli {
             else if (process.argv[i].charAt(1) === 'a')
                 this._applicantConfig = await this._loadConfiguration(process.argv[++i]);
             else if (process.argv[i].charAt(1) === 'l')
-                this._lenderConfig = await this._loadConfiguration(process.argv[++i]);
-            else if (process.argv[i].charAt(1) === 'f')
-                this._cliFlags = await this._loadConfiguration(process.argv[++i]);
+                this._learningModelConfig = await this._loadConfiguration(process.argv[++i]);
         }
         if (process.argv.length === 1 || showHelp)
             this._prepareHelpMessage();
         else {
             if (!this._applicantConfig)
                 throw new Error('No applicant configuration was provided');
-            if (!this._lenderConfig)
+            if (!this._learningModelConfig)
                 throw new Error('No lender configuration was provided');
-            if (!this._cliFlags)
-                this._cliFlags = new DefaultCliFlags();
         }
     }
     async _loadConfiguration(uri) {
@@ -41,17 +42,18 @@ class FailedLoadAppCli {
         return ret;
     }
     _prepareHelpMessage() {
-        const HELP_MSG = `Failed Loan App command line interface
-FailedLoadAppCli [options]
+        const HELP_MSG = `Rejected Loan App Explainer command line interface
+RejectedLoanApplExplainerCli [options]
 where options are:
   --help|-h|-?\t\t- prints this message
-  -a <applicant JSON> 
-  -l <lender JSON> 
+  -a <applicant JSON config> 
+  -l <learning model JSON config> 
   [-f <flags JSON>]
 `;
         console.log(HELP_MSG);
     }
 }
-let app = new FailedLoadAppCli();
-app.run();
-//# sourceMappingURL=FailedLoanAppCli.js.map
+let app = new RejectedLoanApplExplainerCli();
+let result = await app.run();
+console.log(result);
+//# sourceMappingURL=RejectedLoanApplExplainerCli.js.map

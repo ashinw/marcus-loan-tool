@@ -1,18 +1,41 @@
 {
-  "identity": {
-    "firstName": "Ashin",
-    "lastName": "Wimalajeewa",
-    "dateOfBirth": "12/07/1969"
+  "identity":{
+    "CustomerID": "m.wima.02.08.1997",
+    "FirstName":"Marcus",
+    "LastName":"Wimalajeewa",
+    "DateOfBirth":"02/08/1997"
   },
   "contact": {
-    "address": {
-      "number": "2",
-      "street": "Camellia",
-      "city": "Wheelers Hill",
-      "postcode": "3150"
+    "address":{
+      "StreetAddress":"2 Camellia",
+      "City":"Wheelers Hill",
+      "State": "Vic",
+      "PostalCode":"3150"
     },
-    "email": "ashinw@gmail.com",
-    "mobile": "0400894008"
+    "Email":"marcus@self.com.au",
+    "Telephone":"0466998998"
   },
-  "annualIncome": 22000
+  "userProvidedInformation": {
+    "InstallmentPlans": "none",
+    "EmploymentDuration":"1_to_4", 
+    "Sex":"male",
+    "CurrentResidenceDuration":2,
+    "OwnsProperty":"car_other",
+    "Age":23.0,
+    "Housing":"rent",
+    "Job":"unskilled",
+    "Dependents":1,
+    "ForeignWorker":"yes",
+    "LoanDuration":10,
+    "LoanPurpose":"furniture",
+    "LoanAmount":7000.0,
+    "InstallmentPercent":4,
+    "OthersOnLoan":"none"
+  },
+  "authorizedInformation" :{
+    "CheckingStatus":"0_to_200",
+    "CreditHistory":"outstanding_credit",
+    "ExistingSavings":"100_to_500",
+    "ExistingCreditsCount":1
+  }
 }
