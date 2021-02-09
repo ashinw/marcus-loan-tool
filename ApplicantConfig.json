@@ -1,0 +1,18 @@
+{
+  "identity": {
+    "firstName": "Ashin",
+    "lastName": "Wimalajeewa",
+    "dateOfBirth": "12/07/1969"
+  },
+  "contact": {
+    "address": {
+      "number": "2",
+      "street": "Camellia",
+      "city": "Wheelers Hill",
+      "postcode": "3150"
+    },
+    "email": "ashinw@gmail.com",
+    "mobile": "0400894008"
+  },
+  "annualIncome": 22000
+}

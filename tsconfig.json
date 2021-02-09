@@ -1,0 +1,19 @@
+{
+	"compilerOptions": {
+		"target": "ES2019",
+		"module": "ESNext",
+		"moduleResolution": "node",
+		"lib": ["ES2019", "dom"],
+		"sourceMap": true,
+		"allowUnreachableCode": false,
+		// "allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
+		"experimentalDecorators": true,
+		"forceConsistentCasingInFileNames": true,
+		"outDir": "./esm",
+		"declarationDir": "./@types",
+		"declaration": true,
+		"incremental": true,
+	},
+	"include": ["./src/**/*.ts"]
+}
